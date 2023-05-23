@@ -1,0 +1,15 @@
+
+buckets:
+  test01:
+    type: oss
+    access_id: LTAI5tEHNr4ZsDRpbPM2yutT
+    access_key: VJyWHbShpAQ1yOVALbKGets7Vgi56y
+    region: oss-cn-hongkong.aliyuncs.com
+    bucket: adriandemo
+
+  demo01:
+    type: cos
+    secret_id: 'AKIDuR9lALHE9EGDA5ze5ymNn5C94rdEahru'
+    secret_key: '4vundQ2TuBGKE3e2T4WyGKFzY3bHo9RZ'
+    region: 'ap-hongkong'
+    bucket: 'adriandemo-1309875009'
