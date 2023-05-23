@@ -10,6 +10,7 @@ import logging
 from uploader import UploaderFactory, UploaderInterface
 from qcloud_cos.cos_threadpool import SimpleThreadPool
 from typing import TypedDict
+import progressbar
 
 #  上传文件列表类型
 class UploadQueueItem(TypedDict):
@@ -56,6 +57,15 @@ def load_bucket_config(filename: str, name: str) -> dict:
         
         return conf['buckets'][name]
 
+class UploadingBar:
+    def __init__(self, max_value) -> None:
+        self.counter = 0
+        self.bar = progressbar.ProgressBar(max_value=max_value)
+
+    def update(self, n=1):
+        self.counter += n
+        self.bar.update(self.counter)
+
 def process_upload(upload_queue: queue.Queue[UploadQueueItem], uploader: UploaderInterface):
     """
     多线程执行文件上传任务
@@ -65,6 +75,13 @@ def process_upload(upload_queue: queue.Queue[UploadQueueItem], uploader: Uploade
         uploader (UploaderInterface): 上传对象
     """
 
+    # 上传进度条
+    bar = UploadingBar(upload_queue.qsize())
+    def upload_handler(local_file: str, object_key: str):
+        res = uploader.upload_file(local_file, object_key)
+        bar.update()
+        return res
+
     # 创建上传的线程池
     pool = SimpleThreadPool()
     nums_file = 0
@@ -72,7 +89,8 @@ def process_upload(upload_queue: queue.Queue[UploadQueueItem], uploader: Uploade
         # 统计要上传文件的个数
         nums_file = nums_file + 1
         item = upload_queue.get()
-        pool.add_task(uploader.upload_file, item['local_file'], item['object_key'])
+        # pool.add_task(uploader.upload_file, item['local_file'], item['object_key'])
+        pool.add_task(upload_handler, item['local_file'], item['object_key'])
 
     pool.wait_completion()
     result = pool.get_result()

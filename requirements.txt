@@ -1,3 +1,4 @@
 oss2
 cos-python-sdk-v5
 pyyaml
+progressbar2
