@@ -10,6 +10,9 @@ class UploaderCos(UploaderInterface):
         self.client = None
         self.bucket_name = None
 
+    def __str__(self):
+        return f"腾讯云对象存储{self.bucket_name}"
+
     def initialize(self, secret_id: str, secret_key: str, region: str, bucket_name: str):
         # 配置密钥信息
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=None, Scheme='https')
@@ -17,7 +20,7 @@ class UploaderCos(UploaderInterface):
         self.client = CosS3Client(config)
         self.bucket_name = bucket_name
 
-    def upload_file(self, file_path: str, object_name: str):
+    def upload_file(self, file_path: str, object_name: str) -> str:
         if not self.client or not self.bucket_name:
             raise ValueError("UploaderCos not initialized. Call initialize() before uploading files.")
         
@@ -36,3 +39,5 @@ class UploaderCos(UploaderInterface):
             logging.debug(f"File '{file_path}' uploaded successfully as '{object_name}'.")
         else:
             raise Exception(f"Error occurred while uploading file '{file_path}': {response['Response']['Error']['Message']}")
+        
+        return object_name

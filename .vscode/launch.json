@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/cp2oss.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["-b", "test01", "-d", "/Users/adrian/Downloads/dist"],
+            "args": ["-b", "demo01", "-d", "/Users/adrian/Downloads/dist"],
         }
     ]
 }

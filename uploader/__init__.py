@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .cos import UploaderCos
 from .oss import UploaderOss
 from .uploader_interface import UploaderInterface
