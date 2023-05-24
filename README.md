@@ -1,5 +1,12 @@
+# cp2cos
 
-## 使用示例
+a cli tool to copy local folder to oss/cos with multi-keys in config
+
+## TODO
+
+* unzip file in memory
+
+## usage
 
 * 上传本地dist文件夹到名字为test01存储的`h5`路径下
 
